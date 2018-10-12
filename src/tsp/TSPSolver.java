@@ -78,7 +78,7 @@ public class TSPSolver {
 		{
 			// TODO
 			// Code a loop base on time here
-<<<<<<< HEAD
+
 			for(int i=0; i<m_instance.getNbCities(); i++) {
 				m_solution.setCityPosition(i, i);
 			}
@@ -86,8 +86,7 @@ public class TSPSolver {
 			
 			
 			
-=======
->>>>>>> branch 'master' of https://github.com/gauth42/TSP_Project.git
+
 			spentTime = System.currentTimeMillis() - startTime;
 		}while(spentTime < (m_timeLimit * 1000 - 100) );
 		
