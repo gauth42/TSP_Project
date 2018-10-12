@@ -82,7 +82,7 @@ public class TSPSolver {
 			for(int i=0; i<m_instance.getNbCities(); i++) {
 				m_solution.setCityPosition(i, i);
 			}
-			int dummy = 60;
+			int dummy = 50;
 			
 			
 			
