@@ -78,7 +78,12 @@ public class TSPSolver {
 		{
 			// TODO
 			// Code a loop base on time here
-			int dummyVariable = 42;
+			for(int i=0; i<m_instance.getNbCities(); i++) {
+				m_solution.setCityPosition(i, i);
+			}
+			
+			
+			
 			spentTime = System.currentTimeMillis() - startTime;
 		}while(spentTime < (m_timeLimit * 1000 - 100) );
 		
