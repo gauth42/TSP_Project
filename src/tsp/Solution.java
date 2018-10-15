@@ -275,4 +275,55 @@ public class Solution{
 	public String getError() {
 		return m_error;
 	}
+
+	/**
+	 * @return the m_cities
+	 */
+	public int[] getM_cities() {
+		return m_cities;
+	}
+
+	/**
+	 * @return the m_nbCities
+	 */
+	public int getM_nbCities() {
+		return m_nbCities;
+	}
+	
+	public boolean estVisite(int ville) {
+		// Permet de savoir si la ville "ville" a déjà été visitée
+		// La ville 0 est toujours la première visitée
+		boolean res = false;
+		int curseur = 1;
+		while(m_cities[curseur]!=0 && !res) { // On parcourt la liste des villes. Si on tombe sur 0 on s'arrête (ie on est à la fin de la liste des villes visitées
+			res = res || (ville == m_cities[curseur]); 
+			curseur++; // inc
+		}
+		return res;
+	}
+	
+	
+	
+	public int getPPVSuivant() throws Exception {
+		int res = 1;
+		int dernier_voisin =1;
+		long distance_mini = 1000000000; 
+		
+		while(m_cities[dernier_voisin]!=0) {
+			dernier_voisin++;// On récupère l'indice du dernier voisin visité
+		}
+		
+		for(int i=1;i<this.m_nbCities;i++) { // Pour toutes les villes
+			if(!estVisite(i)) { // si on n'a pas déjà visité la ville
+				if(this.m_instance.getDistances(m_cities[dernier_voisin-1], i)<distance_mini) { // et que cette ville est plus proche
+					distance_mini = this.m_instance.getDistances(m_cities[dernier_voisin-1], i); // MAJ distance_mini 
+					res = i;// Le nouveau PPVSuivant est i;
+				}
+			}
+		}
+		
+		return res;
+	}
+	
+	
 }

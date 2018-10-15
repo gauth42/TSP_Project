@@ -81,11 +81,8 @@ public class TSPSolver {
 			// TODO
 			// Code a loop base on time here
 			PPV testAH = new PPV(m_instance, "oui");
-			for(int i=0; i<m_instance.getNbCities(); i++) {
-				//int random = Math.random();
-				m_solution.setCityPosition(i, i);
-			}
-			int dummy = 50;
+			testAH.solve();
+			System.out.println(testAH.getSolution().getPPVSuivant());
 			
 			
 			
