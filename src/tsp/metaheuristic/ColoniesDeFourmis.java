@@ -34,6 +34,7 @@ public class ColoniesDeFourmis extends AMetaheuristic{
 
 	@Override
 	public Solution solve(Solution sol) throws Exception {
+		Solution res = new Solution(sol.getInstance());
 		
 		
 		return null;
