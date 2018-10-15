@@ -82,7 +82,7 @@ public class TSPSolver {
 			// Code a loop base on time here
 			PPV testAH = new PPV(m_instance, "oui");
 			testAH.solve();
-			System.out.println(testAH.getSolution().getPPVSuivant());
+			this.setSolution(testAH.getSolution());
 			
 			
 			
