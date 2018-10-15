@@ -318,10 +318,10 @@ public class Solution{
 				if(this.m_instance.getDistances(m_cities[dernier_voisin-1], i)<distance_mini) { // et que cette ville est plus proche
 					distance_mini = this.m_instance.getDistances(m_cities[dernier_voisin-1], i); // MAJ distance_mini 
 					res = i;// Le nouveau PPVSuivant est i;
+					
 				}
 			}
 		}
-		
 		return res;
 	}
 	
