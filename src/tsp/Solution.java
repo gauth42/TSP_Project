@@ -325,5 +325,42 @@ public class Solution{
 		return res;
 	}
 	
+	//---------------------------------
+	//------OPTIMISATION SOLUTION------
+	//---------------------------------
+	
+	public Solution optSwap(Solution sol, int i, int k) throws Exception{
+		Solution copy = sol.copy();
+		for (int j=i; j<=k; j++) {
+			sol.setCityPosition(copy.getCity(j), i +k-j);
+			
+		}
+		return sol;
+	}
+	
+	public Solution opt(Solution sol) throws Exception {
+		double meilleureDistance = sol.evaluate();
+		for (int i=0; i<m_nbCities-1; i++) {
+			for (int k=i+1; k<m_nbCities; k++) {
+				Solution newSolution = optSwap(sol, i, k);
+				double newDistance = newSolution.evaluate();
+				if (newDistance<meilleureDistance) {
+					sol = newSolution;
+					meilleureDistance = newDistance;
+				}
+			}
+		}
+		return sol;
+	}
+	
+	public String toString() {
+		String res = "{";
+		for(int i=0;i<this.getM_nbCities();i++) {
+			res = res + this.m_cities[i]+",";
+		}
+		res = res + "0}";
+		return res;
+	}
+	
 	
 }

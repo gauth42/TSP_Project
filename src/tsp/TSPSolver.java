@@ -81,37 +81,14 @@ public class TSPSolver {
 		long spentTime = 0;
 		do
 		{
-			// On va partir d'une solution initiale sol
-			// L'algorithme renverra alors la solution optimale, il faudra calculer des solutions intermédiaires
-			// On commence par créer le tableau de phéromone vierge
-			int[][] tab_phero = new int[m_instance.getNbCities()][m_instance.getNbCities()];
-			// On crée la colonie de fourmis
-			// On choisi arbitrairement 20 fourmis (peut changer)
-			ArrayList<Ant> liste_fourmis = new ArrayList<Ant>();
-			ColoniesDeFourmis colo = new ColoniesDeFourmis(m_instance,"oui",liste_fourmis,tab_phero);
-			for(int i =0;i<20;i++) {
-				String name = ""+i;
-				colo.AjouterFourmis(new Ant(m_instance,name,tab_phero));
-			}
+			PPV ppv = new PPV(m_instance,"oui");
+			ppv.solve();
+			Solution sol = ppv.getSolution();
+			sol.opt(sol);
+			//System.out.println(sol.toString());
 			
-			// Initialisation de la fourmi éclaireuse
-			
-			// Solution éclaireuse
-			
-			Solution sol = new Solution(m_instance);
-			for(int i =0;i<m_instance.getNbCities();i++) {
-				sol.setCityPosition(i, i);
-			}
-			
-			// La fonction solve dans colonie de fourmis effectue une itération et améliore la solution
-			// On va définir un critère d'arrêt sur la fonction objectif
-			double epsilon = 0.5;
-			Solution sol_interim = colo.solve(sol);
-			while (sol.getObjectiveValue()-sol_interim.getObjectiveValue()<epsilon) {
-				sol = colo.solve(sol);
-				sol_interim = colo.solve(sol);
-			}
-			this.setSolution(sol_interim);
+			this.setSolution(sol);
+			//this.setSolution(ppv.getSolution());
 
 			spentTime = System.currentTimeMillis() - startTime;
 		}while(spentTime < (m_timeLimit * 1000 - 100) );
