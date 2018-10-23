@@ -332,16 +332,15 @@ public class Solution{
 	public Solution optSwap(Solution sol, int i, int k) throws Exception{
 		Solution copy = sol.copy();
 		for (int j=i; j<=k; j++) {
-			sol.setCityPosition(copy.getCity(j), i +k-j);
-			
+			sol.setCityPosition(copy.getCity(j), i +k-j);	
 		}
 		return sol;
 	}
 	
 	public Solution opt(Solution sol) throws Exception {
 		double meilleureDistance = sol.evaluate();
-		for (int i=0; i<m_nbCities-1; i++) {
-			for (int k=i+1; k<m_nbCities; k++) {
+		for (int i=1; i<m_nbCities-2; i++) {
+			for (int k=i+1; k<m_nbCities-1; k++) {
 				Solution newSolution = optSwap(sol, i, k);
 				double newDistance = newSolution.evaluate();
 				if (newDistance<meilleureDistance) {
