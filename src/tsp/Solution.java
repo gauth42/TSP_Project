@@ -331,23 +331,30 @@ public class Solution{
 	
 	public Solution optSwap(Solution sol, int i, int k) throws Exception{
 		Solution copy = sol.copy();
+		Solution solSwap = sol.copy();
 		for (int j=i; j<=k; j++) {
-			sol.setCityPosition(copy.getCity(j), i +k-j);	
+			solSwap.setCityPosition(copy.getCity(j), i +k-j);	
 		}
-		return sol;
+		return solSwap;
 	}
 	
 	public Solution opt(Solution sol) throws Exception {
-		double meilleureDistance = sol.evaluate();
-		for (int i=1; i<m_nbCities-2; i++) {
-			for (int k=i+1; k<m_nbCities-1; k++) {
-				Solution newSolution = optSwap(sol, i, k);
-				double newDistance = newSolution.evaluate();
-				if (newDistance<meilleureDistance) {
-					sol = newSolution;
-					meilleureDistance = newDistance;
+		Solution newSolution = sol.copy();
+		int amelioration = 0;
+		while (amelioration<800) {
+			double meilleureDistance = sol.evaluate();
+			for (int i=1; i<m_nbCities-1; i++) {
+				for (int k=i+1; k<m_nbCities; k++) {
+					newSolution = optSwap(sol, i, k);
+					double newDistance = newSolution.evaluate();
+					if (newDistance<meilleureDistance) {
+						amelioration = 0;
+						sol = newSolution;
+						meilleureDistance = newDistance;
+					}
 				}
 			}
+			amelioration++;
 		}
 		return sol;
 	}
@@ -355,9 +362,9 @@ public class Solution{
 	public String toString() {
 		String res = "{";
 		for(int i=0;i<this.getM_nbCities();i++) {
-			res = res + this.m_cities[i]+",";
+			res = res + this.m_cities[i]+", ";
 		}
-		res = res + "0}";
+		res = res + " 0}";
 		return res;
 	}
 	

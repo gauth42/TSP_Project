@@ -85,8 +85,6 @@ public class TSPSolver {
 			ppv.solve();
 			Solution sol = ppv.getSolution();
 			sol.opt(sol);
-			//System.out.println(sol.toString());
-			
 			this.setSolution(sol);
 			//this.setSolution(ppv.getSolution());
 
