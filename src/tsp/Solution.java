@@ -363,9 +363,32 @@ public class Solution{
 		return sol;
 	}
 	
-	//public Solution troisOptSwap(Solution sol, int i) {
-		
-	//}
+	public Solution troisOptSwap(Solution sol, int i, int k, int j) {
+		return 
+	}
+	
+	public Solution troisOpt(Solution sol) throws Exception {
+		Solution newSolution = sol.copy();
+		int amelioration = 0;
+		while (amelioration<10) {
+			double meilleureDistance = sol.evaluate();
+			for (int i=1; i<m_nbCities-2; i++) {
+				for (int k=i+1; k<m_nbCities-1; k++) {
+					for (int j=k+1; j<m_nbCities; j++) {
+						newSolution = troisOptSwap(sol, i, k, j);
+						double newDistance = newSolution.evaluate();
+						if (newDistance<meilleureDistance) {
+							amelioration = 0;
+							sol = newSolution.copy();
+							meilleureDistance = newDistance;
+						}
+					}
+				}
+			}
+			amelioration++;
+		}
+		return sol;
+	}
 	
 	public String toString() {
 		String res = "{";
