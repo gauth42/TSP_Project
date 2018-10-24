@@ -333,15 +333,18 @@ public class Solution{
 		Solution copy = sol.copy();
 		Solution solSwap = sol.copy();
 		for (int j=i; j<=k; j++) {
-			solSwap.setCityPosition(copy.getCity(j), i +k-j);	
+			solSwap.setCityPosition(copy.getCity(j), i+k-j);
+			//System.out.println(solSwap.toString());
 		}
 		return solSwap;
 	}
 	
 	public Solution opt(Solution sol) throws Exception {
 		Solution newSolution = sol.copy();
+		
 		int amelioration = 0;
-		while (amelioration<800) {
+		while (amelioration<10) {
+			//System.out.println("hello");
 			double meilleureDistance = sol.evaluate();
 			for (int i=1; i<m_nbCities-1; i++) {
 				for (int k=i+1; k<m_nbCities; k++) {
@@ -349,12 +352,13 @@ public class Solution{
 					double newDistance = newSolution.evaluate();
 					if (newDistance<meilleureDistance) {
 						amelioration = 0;
-						sol = newSolution;
+						sol = newSolution.copy();
 						meilleureDistance = newDistance;
 					}
 				}
 			}
 			amelioration++;
+			//System.out.println(sol.toString());
 		}
 		return sol;
 	}
