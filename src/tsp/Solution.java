@@ -363,6 +363,10 @@ public class Solution{
 		return sol;
 	}
 	
+	//public Solution troisOptSwap(Solution sol, int i) {
+		
+	//}
+	
 	public String toString() {
 		String res = "{";
 		for(int i=0;i<this.getM_nbCities();i++) {
