@@ -343,8 +343,7 @@ public class Solution{
 		Solution newSolution = sol.copy();
 		
 		int amelioration = 0;
-		while (amelioration<10) {
-			//System.out.println("hello");
+		while (amelioration<5) {
 			double meilleureDistance = sol.evaluate();
 			for (int i=1; i<m_nbCities-1; i++) {
 				for (int k=i+1; k<m_nbCities; k++) {
@@ -358,19 +357,31 @@ public class Solution{
 				}
 			}
 			amelioration++;
-			//System.out.println(sol.toString());
 		}
 		return sol;
 	}
 	
-	public Solution troisOptSwap(Solution sol, int i, int k, int j) {
-		return 
+	public Solution troisOptSwap(Solution sol, int i, int k, int j) throws Exception {
+		Solution copy = sol.copy();
+		Solution solSwap = sol.copy();
+		int lon = k-i;
+		for (int l=i; l<=k; l++) {
+			solSwap.setCityPosition(copy.getCity(l), j-lon);
+			lon--;
+		}
+		int pos = 1;
+		for (int m=k+1; m<j; m++) {
+			solSwap.setCityPosition(copy.getCity(m), i+pos);
+			pos++;
+		}
+		solSwap.setCityPosition(copy.getCity(j), i);
+		return solSwap;
 	}
 	
 	public Solution troisOpt(Solution sol) throws Exception {
 		Solution newSolution = sol.copy();
 		int amelioration = 0;
-		while (amelioration<10) {
+		while (amelioration<5) {
 			double meilleureDistance = sol.evaluate();
 			for (int i=1; i<m_nbCities-2; i++) {
 				for (int k=i+1; k<m_nbCities-1; k++) {

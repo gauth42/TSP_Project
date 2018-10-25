@@ -83,11 +83,12 @@ public class TSPSolver {
 		{
 			PPV ppv = new PPV(m_instance,"oui");
 			ppv.solve();
-			/*Solution sol = ppv.getSolution();
+			Solution sol = ppv.getSolution();
 			sol = sol.opt(sol);
-			
-			this.setSolution(sol);*/
-			this.setSolution(ppv.getSolution());
+			sol = sol.troisOpt(sol);
+			//System.out.println(sol.toString());
+			this.setSolution(sol);
+			//this.setSolution(ppv.getSolution());
 
 			spentTime = System.currentTimeMillis() - startTime;
 		}while(spentTime < (m_timeLimit * 1000 - 100) );
