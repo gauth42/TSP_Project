@@ -1,7 +1,9 @@
 package tsp;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * 
@@ -325,6 +327,13 @@ public class Solution{
 		return res;
 	}
 	
+	
+	public void swap(int index1, int index2) throws Exception {
+		int ville1 = this.getCity(index1);
+		this.setCityPosition(this.getCity(index2), index1);
+		this.setCityPosition(ville1, index2);
+	}
+	
 	//---------------------------------
 	//------OPTIMISATION SOLUTION------
 	//---------------------------------
@@ -411,4 +420,13 @@ public class Solution{
 	}
 	
 	
+	//Permet de tester si une solution en cours de création possède 
+		public boolean contient(int val) throws Exception {
+			boolean res = this.getCity(0)==val;
+			int compteur=0;
+			while(!res && compteur<this.getM_nbCities()) {
+				res = this.getCity(compteur)==val;
+				compteur++;
+			} return res;
+		}
 }

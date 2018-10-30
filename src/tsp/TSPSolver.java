@@ -81,6 +81,7 @@ public class TSPSolver {
 		long spentTime = 0;
 		do
 		{
+			/*
 			PPV ppv = new PPV(m_instance,"oui");
 			ppv.solve();
 			Solution sol = ppv.getSolution();
@@ -89,9 +90,23 @@ public class TSPSolver {
 			//System.out.println(sol.toString());
 			this.setSolution(sol);
 			//this.setSolution(ppv.getSolution());
+		*/
+		
+			Solution sol = new Solution(this.getInstance());
+			double tauxmut = 0.015;
+			boolean elitisme = true;
+			int nbindtournoi = 10;
+			int nbgene = 2000;
+			int taillepop = 1000;
+			Genetic genetic = new Genetic(this.getInstance(), "Genetic Algorithm", tauxmut, elitisme, nbindtournoi, nbgene, taillepop);
 
+			sol = genetic.solve(sol);
+			this.setSolution(sol);
+			
 			spentTime = System.currentTimeMillis() - startTime;
+			
 		}while(spentTime < (m_timeLimit * 1000 - 100) );
+
 		
 	}
 
