@@ -157,9 +157,9 @@ public class TSPGUI extends JFrame implements ActionListener {
 		};
 		
 		this.getContentPane().add(p);
-		//this.setLocationRelativeTo(null); 	 	 	  			  		 		 	
-		//this.setSize(600,1000); 
-		this.pack();
+		this.setLocationRelativeTo(null); 	 	 	  			  		 		 	
+		this.setSize(900,900); 
+		//this.pack();
 	}
 	
 	

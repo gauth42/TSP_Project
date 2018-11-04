@@ -14,6 +14,7 @@ public class Population {
 	private ArrayList<Solution> individus;
 	private int nbindtournoi;
 	public boolean elitisme;
+
 	
 // -----------------------------
 // ----- CONSTRUCTOR -----------
@@ -35,11 +36,38 @@ public class Population {
 			}
 		} else {
 			for(int i=0; i<this.getTaillepop(); i++) {
-			individus.add(this.genIndividu());
+				individus.add(this.genIndividu());
 			}
 		}
 	}
 	
+	public Population(Instance instance, boolean vide, double tauxmut, boolean elitisme, int taillepop, int nbindtournoi, Solution solinit) throws Exception {
+		this.instance=instance;
+		this.vide=vide;
+		this.tauxmut=tauxmut;
+		this.taillepop=taillepop;
+		this.nbindtournoi=nbindtournoi;
+		this.elitisme=elitisme;
+		this.individus = new ArrayList<Solution>();
+		
+		int nbswap = 1;
+		int nbcity = this.instance.getNbCities();
+		individus.add(solinit);
+		for(int i=1; i<this.getTaillepop(); i++) {
+			Solution sol = solinit.copy();
+			for(int j=0; j<nbswap; j++) {
+				int index1 = (int)(Math.random()*nbcity);
+				int index2 = (int)(Math.random()*nbcity);
+				
+				while(index1==index2 || index1==0 || index1==this.getInstance().getNbCities() || index2==0 || index2==this.getInstance().getNbCities()) {
+					index1 = (int)(Math.random()*nbcity);
+					index2 = (int)(Math.random()*nbcity);
+				}
+				sol.swap(index1, index2);
+			}
+			individus.add(sol);
+		}
+	}
 	
 // -----------------------------
 // ----- METHODS ---------------
@@ -82,7 +110,7 @@ public class Population {
 	//Retourne le meilleur individu du tournoi
 	
 	public Solution Tournoi() throws Exception {
-		Population tournoi = new Population(this.getInstance(), true, this.getTauxmut(), this.isElitisme(), this.getTaillepop(), this.getNbindtournoi());
+		Population tournoi = new Population(this.getInstance(), true, this.getTauxmut(), this.isElitisme(), this.getNbindtournoi(), this.getNbindtournoi());
 		for(int i=0; i<this.getNbindtournoi(); i++) {
 			int rand = (int)(Math.random()*this.getTaillepop());
 			tournoi.setIndividu(this.getIndividus().get(rand), i);
@@ -160,7 +188,10 @@ public class Population {
 		for(int i=eli; i<newPop.getTaillepop(); i++) {
 			Solution parent1 = this.Tournoi();
 			Solution parent2 = this.Tournoi();
-			Solution child = this.Crossover(parent1, parent2);	
+			Solution child = this.Crossover(parent1, parent2);
+			if(Math.random()<0.01) {
+				//child.opt(child);
+			}
 			newPop.setIndividu(child, i);
 		}
 		for(int i=eli; i<newPop.getTaillepop(); i++) {
