@@ -292,34 +292,50 @@ public class Solution{
 		return m_nbCities;
 	}
 	
+	
+// ---------------------------------------------------
+// ------------- METHODS ADDED -----------------------
+// ---------------------------------------------------
+	
+	/** Check if the city number ville has been visited
+	 * The city number 0 is always the first to be visited
+	 * As the city are added in ascending order the algorithm stops when it finds 0 in m_cities[]
+	 * 
+	 * @param ville  number of the city to be checked
+	 * @return true if the city is visited, otherwise false
+	 */
 	public boolean estVisite(int ville) {
-		// Permet de savoir si la ville "ville" a déjà été visitée
-		// La ville 0 est toujours la première visitée
 		boolean res = false;
 		int curseur = 1;
-		while(m_cities[curseur]!=0 && !res) { // On parcourt la liste des villes. Si on tombe sur 0 on s'arrête (ie on est à la fin de la liste des villes visitées
+		while(m_cities[curseur]!=0 && !res) { 
 			res = res || (ville == m_cities[curseur]); 
-			curseur++; // inc
+			curseur++; 
 		}
 		return res;
 	}
 	
 	
-	
+	/** Find the nearest city of the last one added in m_cities[]
+	 * The first step is to get the last city visited
+	 * The second is to find its nearest city
+	 * 
+	 * @return the number of the next city to be added in the solution
+	 * @throws Exception
+	 */
 	public int getPPVSuivant() throws Exception {
 		int res = 1;
 		int dernier_voisin =1;
 		long distance_mini = 1000000000; 
 		
 		while(m_cities[dernier_voisin]!=0) {
-			dernier_voisin++;// On récupère l'indice du dernier voisin visité
+			dernier_voisin++;//
 		}
 		
-		for(int i=1;i<this.m_nbCities;i++) { // Pour toutes les villes
+		for(int i=1;i<this.m_nbCities;i++) {
 			if(!estVisite(i)) { // si on n'a pas déjà visité la ville
-				if(this.m_instance.getDistances(m_cities[dernier_voisin-1], i)<distance_mini) { // et que cette ville est plus proche
-					distance_mini = this.m_instance.getDistances(m_cities[dernier_voisin-1], i); // MAJ distance_mini 
-					res = i;// Le nouveau PPVSuivant est i;
+				if(this.m_instance.getDistances(m_cities[dernier_voisin-1], i)<distance_mini) { 
+					distance_mini = this.m_instance.getDistances(m_cities[dernier_voisin-1], i);
+					res = i;
 					
 				}
 			}
@@ -328,6 +344,12 @@ public class Solution{
 	}
 	
 	
+	/** Change the position of the city at the index index 1 and index2.
+	 * 
+	 * @param index1 the index of the first element to swap
+	 * @param index2 the index of the second element to swap
+	 * @throws Exception
+	 */
 	public void swap(int index1, int index2) throws Exception {
 		int ville1 = this.getCity(index1);
 		this.setCityPosition(this.getCity(index2), index1);
@@ -338,16 +360,29 @@ public class Solution{
 	//------OPTIMISATION SOLUTION------
 	//---------------------------------
 	
+	/**
+	 * 
+	 * @param sol the solution which is 
+	 * @param i
+	 * @param k
+	 * @return
+	 * @throws Exception
+	 */
 	public Solution optSwap(Solution sol, int i, int k) throws Exception{
 		Solution copy = sol.copy();
 		Solution solSwap = sol.copy();
 		for (int j=i; j<=k; j++) {
 			solSwap.setCityPosition(copy.getCity(j), i+k-j);
-			//System.out.println(solSwap.toString());
 		}
 		return solSwap;
 	}
 	
+	/**
+	 * 
+	 * @param sol
+	 * @return
+	 * @throws Exception
+	 */
 	public Solution opt(Solution sol) throws Exception {
 		Solution newSolution = sol.copy();
 		
@@ -370,6 +405,16 @@ public class Solution{
 		return sol;
 	}
 	
+	
+	/**
+	 * 
+	 * @param sol
+	 * @param i
+	 * @param k
+	 * @param j
+	 * @return
+	 * @throws Exception
+	 */
 	public Solution troisOptSwap(Solution sol, int i, int k, int j) throws Exception {
 		Solution copy = sol.copy();
 		Solution solSwap = sol.copy();
@@ -387,6 +432,13 @@ public class Solution{
 		return solSwap;
 	}
 	
+	
+	/**
+	 * 
+	 * @param sol
+	 * @return
+	 * @throws Exception
+	 */
 	public Solution troisOpt(Solution sol) throws Exception {
 		Solution newSolution = sol.copy();
 		int amelioration = 0;
@@ -410,6 +462,11 @@ public class Solution{
 		return sol;
 	}
 	
+	
+	/** Allow us to see a solution through a string with the order of visited cities
+	 * 
+	 * @return A String describing the solution
+	 */
 	public String toString() {
 		String res = "{";
 		for(int i=0;i<this.getM_nbCities();i++) {
@@ -420,13 +477,18 @@ public class Solution{
 	}
 	
 	
-	//Permet de tester si une solution en cours de création possède 
-		public boolean contient(int val) throws Exception {
-			boolean res = this.getCity(0)==val;
-			int compteur=0;
-			while(!res && compteur<this.getM_nbCities()) {
-				res = this.getCity(compteur)==val;
-				compteur++;
-			} return res;
-		}
+	/** Check if a solution contains a city
+	 * 
+	 * @param val 
+	 * @return true if the solution contains the city val, otherwise false
+	 * @throws Exception
+	 */
+	public boolean contient(int val) throws Exception {
+		boolean res = this.getCity(0)==val;
+		int compteur=0;
+		while(!res && compteur<this.getM_nbCities()) {
+			res = this.getCity(compteur)==val;
+			compteur++;
+		} return res;
+	}
 }

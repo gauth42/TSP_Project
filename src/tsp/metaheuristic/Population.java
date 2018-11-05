@@ -5,7 +5,12 @@ import java.util.Collections;
 
 import tsp.Instance;
 import tsp.Solution;
-
+/**
+ * 
+ * @author gauthier.gris
+ *
+ * This class represents a population with all its features.
+ */
 public class Population {
 	private Instance instance;
 	private boolean vide;
@@ -19,7 +24,17 @@ public class Population {
 // -----------------------------
 // ----- CONSTRUCTOR -----------
 // -----------------------------
-	
+	/**
+	 * Initialize a population with random solutions.
+	 * 
+	 * @param instance
+	 * @param vide If true create a population with no solutions
+	 * @param tauxmut Mutation rate
+	 * @param elitisme If true elitism is applied
+	 * @param taillepop Number of solutions in a population
+	 * @param nbindtournoi Number of cities in the tournament selection
+	 * @throws Exception
+	 */
 	public Population(Instance instance, boolean vide, double tauxmut, boolean elitisme, int taillepop, int nbindtournoi) throws Exception {
 		this.instance=instance;
 		this.vide=vide;
@@ -41,6 +56,18 @@ public class Population {
 		}
 	}
 	
+	/**
+	 * Initialize a population with solutions derived with swaps of solinit.
+	 * 
+	 * @param instance
+	 * @param vide If true create a population with no solutions
+	 * @param tauxmut Mutation rate
+	 * @param elitisme If true elitism is applied
+	 * @param taillepop Number of solutions in a population
+	 * @param nbindtournoi Number of cities in the tournament selection
+	 * @param solinit The solution that generates all the population
+	 * @throws Exception
+	 */
 	public Population(Instance instance, boolean vide, double tauxmut, boolean elitisme, int taillepop, int nbindtournoi, Solution solinit) throws Exception {
 		this.instance=instance;
 		this.vide=vide;
@@ -74,8 +101,13 @@ public class Population {
 // -----------------------------
 	
 	
-	//Génère des individus au hasard pour initialiser la population
 	
+	/**
+	 * Create a random solution.
+	 * 
+	 * @return A new solution to fill the population
+	 * @throws Exception
+	 */
 	public Solution genIndividu() throws Exception {
 		ArrayList<Integer> liste = new ArrayList<Integer>();
 		for(int i=1; i<this.getInstance().getNbCities(); i++) {
@@ -91,8 +123,14 @@ public class Population {
 		return individu;
 	}
 	
-	//Retourne le meilleur individu d'une population
 	
+	
+	/**
+	 * This method calculates all solutions' objectiveValue and return the solution with the best one.
+	 * 
+	 * @return The best solution of a population
+	 * @throws Exception
+	 */
 	public Solution getMeilleurInd() throws Exception {
 		
 		double min = this.getIndividus().get(0).evaluate();
@@ -109,6 +147,13 @@ public class Population {
 	
 	//Retourne le meilleur individu du tournoi
 	
+	/**
+	 * Create a tournament:
+	 * nbindtournoi are selected randomly in the population and the one with the best objectiveValue is the "winner" of the tournament.
+	 * 
+	 * @return the winner of the tournament
+	 * @throws Exception
+	 */
 	public Solution Tournoi() throws Exception {
 		Population tournoi = new Population(this.getInstance(), true, this.getTauxmut(), this.isElitisme(), this.getNbindtournoi(), this.getNbindtournoi());
 		for(int i=0; i<this.getNbindtournoi(); i++) {
@@ -118,8 +163,16 @@ public class Population {
 		return tournoi.getMeilleurInd();
 	}
 
-	//Applique potentiellement une mutation à un individu
 	
+	/**
+	 * This methods generation a random number between 0 and 1.
+	 * If this number is inferior to the mutation rate, a mutation is applied to the solution.
+	 * The mutation is a swap of two cities in the solution.
+	 * 
+	 * @param individu the solution which possibly receives a mutation
+	 * @return
+	 * @throws Exception
+	 */
 	public Solution Muter(Solution individu) throws Exception {
 		for(int pos1=1; pos1<individu.getM_nbCities(); pos1++) {
 			if(Math.random()<this.getTauxmut()) {
@@ -133,8 +186,19 @@ public class Population {
 		return individu;
 	}
 
-	//Renvoie l'enfant de deux parents par crossover
 	
+	
+	/**
+	 * Two integers "debut" and "fin" are randomly chosen between 1 and taillepop-1.
+	 * A child solution is created through the order of cities in the parent's solutions.
+	 * 
+	 * 
+	 * 
+	 * @param parent1 The first solution chosen
+	 * @param parent2 The second solution chosen
+	 * @return the child solution created with the two parents
+	 * @throws Exception
+	 */
 	public Solution Crossover(Solution parent1, Solution parent2) throws Exception {
 		
 		Solution child = new Solution(this.getInstance());
@@ -176,8 +240,20 @@ public class Population {
 		return child;
 	}
 
-	//Faire évoluer la population
 	
+	/**
+	 * This method makes the generation evolve to the next generation
+	 * 
+	 * For each member of the new population :
+	 * 		After two tournaments, two solution are selected to be the parents.
+	 * 		A solution child is created from the crossover of these two parents.
+	 * 		The child is subject to a mutation
+	 * 		This solution is finally added in the new population
+	 * 
+	 * If elitism is applied, the best solution is kept from a generation to another
+	 * @return
+	 * @throws Exception
+	 */
 	public Population EvolvePopulation() throws Exception {
 		Population newPop = new Population(this.getInstance(), this.isVide(), this.getTauxmut(), this.isElitisme(), this.getTaillepop(), this.getNbindtournoi());
 		int eli=0;
@@ -190,7 +266,6 @@ public class Population {
 			Solution parent2 = this.Tournoi();
 			Solution child = this.Crossover(parent1, parent2);
 			if(Math.random()<0.01) {
-				//child.opt(child);
 			}
 			newPop.setIndividu(child, i);
 		}
@@ -205,37 +280,68 @@ public class Population {
 // ----- GETTERS / SETTERS -----
 // -----------------------------
 	
-	
+	/**
+	 * 
+	 * @return The number of members in a tournament
+	 */
 	public int getNbindtournoi() {
 		return nbindtournoi;
 	}
 
+	/**
+	 * 
+	 * @return The instance used
+	 */
 	public Instance getInstance() {
 		return instance;
 	}
 
+	/**
+	 * 
+	 * @return yes if the population is empty, otherwise false
+	 */
 	public boolean isVide() {
 		return vide;
 	}
-
+	
+	/**
+	 * 
+	 * @return The mutation rate
+	 */
 	public double getTauxmut() {
 		return tauxmut;
 	}
 
+	/**
+	 * 
+	 * @return The number of solutions in the population
+	 */
 	public int getTaillepop() {
 		return taillepop;
 	}
 
+	/**
+	 * 
+	 * @return An ArrayList containing all the solutions of the population
+	 */
 	public ArrayList<Solution> getIndividus() {
 		return individus;
 	}
 
-
-	
+	/**
+	 * 
+	 * @return yes if elitism is applied, otherwise false
+	 */
 	public boolean isElitisme() {
 		return elitisme;
 	}
 	
+	/**
+	 * Set the solution sol at the index index in the population
+	 * 
+	 * @param sol The solution to be placed in the population
+	 * @param index The index to place the solution
+	 */
 	public void setIndividu(Solution sol, int index) {
 		this.getIndividus().set(index, sol);
 	}

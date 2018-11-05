@@ -79,56 +79,73 @@ public class TSPSolver {
 		// Example of a time loop
 		long startTime = System.currentTimeMillis();
 		long spentTime = 0;
-		//do
+		do
 		{
-			/*
-			Solution solinit = new Solution(m_instance);
-			for(int i =1; i<m_instance.getNbCities(); i++) {
-				solinit.setCityPosition(i, i);
-			}
+			int nbInstance = this.getInstance().getNbCities();
+			System.out.println("nbInstance = "+nbInstance);
 			
-			//*/
-			/*
+			//-------------------------Solution initiale pour les méthaheuristiques------------
+			
 			PPV ppv = new PPV(m_instance,"oui");
 			ppv.solve();
 			Solution sol = ppv.getSolution();
-	
-			sol = sol.opt(sol);
-			sol = sol.troisOpt(sol);
 			
-			this.setSolution(sol);
-			//*/
+	
+	
+			
 		//-------------------------------GENETIC--------------------
-			//*
-			Solution solinit = new Solution(m_instance);
-			for(int i =1; i<m_instance.getNbCities(); i++) {
-				solinit.setCityPosition(i, i);
+				
+			if(nbInstance<100) {
+				double tauxmut=1;
+				boolean elitisme = true;
+				int nbgene=15000;
+				int taillepop=200;
+				int nbindtournoi=3;
+				Solution solinit = sol.copy();
+				
+				Genetic genetic = new Genetic(this.getInstance(), "TSP_Genetic", tauxmut, elitisme, nbindtournoi, nbgene, taillepop, solinit);
+				sol = genetic.solve(sol);
+			} else if(nbInstance<150) {
+				double tauxmut=1;
+				boolean elitisme = true;
+				int nbgene=10000;
+				int taillepop=200;
+				int nbindtournoi=3;
+				Solution solinit = sol.copy();
+				
+				Genetic genetic = new Genetic(this.getInstance(), "TSP_Genetic", tauxmut, elitisme, nbindtournoi, nbgene, taillepop, solinit);
+				sol = genetic.solve(sol);
+			}
+			else if(nbInstance<205) {
+				double tauxmut=1;
+				boolean elitisme = true;
+				int nbgene=6000;
+				int taillepop=100;
+				int nbindtournoi=3;
+				Solution solinit = sol.copy();
+				
+				Genetic genetic = new Genetic(this.getInstance(), "TSP_Genetic", tauxmut, elitisme, nbindtournoi, nbgene, taillepop, solinit);
+				sol = genetic.solve(sol);
+			}
+				
+	
+			//-------------------------2-opt------------
+			
+			sol = sol.opt(sol);
+			
+			//-------------------------3-opt------------
+			if(nbInstance<320) {
+				sol = sol.troisOpt(sol);
 			}
 			
-			//*/
-		
-			/*
-			PPV ppv = new PPV(m_instance,"oui");
-			ppv.solve();
-			Solution solinit = ppv.getSolution();
-			//*/
-			//*
-			Solution sol = new Solution(this.getInstance());
-			double tauxmut = 0.5;
-			boolean elitisme = true;
-			int nbindtournoi = 10;
-			int nbgene = 300;
-			int taillepop = 10000;
-			Genetic genetic = new Genetic(this.getInstance(), "Genetic Algorithm", tauxmut, elitisme, nbindtournoi, nbgene, taillepop, solinit);
 
-			sol = genetic.solve(sol);
+			//-------------------------Affectation de la solution------------
 			
-			this.setSolution(sol); 
-			//*/
+			this.setSolution(sol);
 			
 			spentTime = System.currentTimeMillis() - startTime;
 			
-		}//while(spentTime < (m_timeLimit * 1000 - 100) );
+		} while(spentTime < (m_timeLimit * 1000 - 100) );
 
 		
 	}
